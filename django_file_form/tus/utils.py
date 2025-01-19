@@ -11,6 +11,11 @@ from django_file_form import conf
 
 
 cache = caches[getattr(settings, "FILE_FORM_CACHE", "default")]
+VIDEO_STORAGE_MEDIA_ROOT = getattr(
+    settings,
+    "VIDEO_STORAGE_MEDIA_ROOT",
+    settings.MEDIA_ROOT
+)
 
 
 def remove_resource_from_cache(resource_id):
@@ -53,7 +58,7 @@ def create_uploaded_file_in_db_with_copy(values, uploaded_file):
 
 
 def create_uploaded_file_in_db_with_move(values, uploaded_file):
-    values["uploaded_file"] = str(uploaded_file.relative_to(Path(settings.MEDIA_ROOT)))
+    values["uploaded_file"] = str(uploaded_file.relative_to(Path(VIDEO_STORAGE_MEDIA_ROOT)))
 
     TemporaryUploadedFile.objects.create(**values)
 
